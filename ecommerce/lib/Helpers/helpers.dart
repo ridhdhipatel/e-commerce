@@ -116,4 +116,12 @@ class Helpers {
             .asUint8List();
     return bytes;
   }
+
+  String createImageUrl(String dirName, int id, String imageName) {
+    return '${Consts.imageBaseUrl}$dirName/$id/$imageName';
+  }
+
+  String createThumbImageUrl(String dirName, int id, String imageName) {
+    return '${Consts.imageBaseUrl}$dirName/$id/thumb/$imageName';
+  }
 }
