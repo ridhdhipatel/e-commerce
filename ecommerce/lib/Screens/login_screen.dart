@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../Helpers/helpers.dart';
+import '../Models/models.dart';
+import '../Providers/providers.dart';
 import '../Screens/screens.dart';
 import '../Constants/constants.dart';
 import '../Routes/routes.dart';
@@ -19,6 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _loginFormKey = GlobalKey();
   final GlobalKey<FormState> _registerFormKey = GlobalKey();
+  late LoginProvider loginProvider;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -43,6 +47,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool isLogin = false;
   bool isRegester = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
+  }
+
+  onLogin() {
+    if (_loginFormKey.currentState!.validate()) {
+      var username = _usernameController.text;
+      var password = _passwordController.text;
+      var loginRequest = customerLoginToJson(
+        CustomerLogin(
+          username: username,
+          password: password,
+          adminId: Consts.adminId,
+        ),
+      );
+
+      loginProvider.customerLogin(loginRequest).then((response) {
+        Helpers.showToast(response);
+      });
+    } else {
+      Helpers.showToast('Username and password requried');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -318,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? AutovalidateMode.always
                 : AutovalidateMode.disabled,
             decoration: Helpers.textfieldDecoration('Username'),
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
             maxLines: 1,
             cursorColor: AppColors.primaryColor,
@@ -380,8 +410,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           InkWell(
             onTap: () {
-              Shared shared = Shared();
-              shared.setLogin(true);
+              onLogin();
               Navigator.of(context).pushReplacementNamed(BaseScreen.routeName);
             },
             child: Container(

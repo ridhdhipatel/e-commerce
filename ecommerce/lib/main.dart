@@ -18,6 +18,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
+          value: LoginProvider(),
+        ),
+        ChangeNotifierProvider.value(
           value: SliderProvider(),
         ),
         ChangeNotifierProvider.value(
