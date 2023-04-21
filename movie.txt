@@ -328,3 +328,51 @@ class SpokenLanguage {
 // Upcoming => https://api.themoviedb.org/3/movie/upcoming?api_key=e949d20c34ac3b91277167d9973739a3&language=en-US&page=1
 //Genres =>https://api.themoviedb.org/3/genre/movie/list?api_key=e949d20c34ac3b91277167d9973739a3&language=en-US
 // Image Path =>https://image.tmdb.org/t/p/w500/{image_name}
+
+//Scrolling Functionality
+//final ScrollController _scrollController = ScrollController();
+//int pageNumber = 1;
+//_scrollController.addListener(() {
+//      if (_scrollController.position.pixels ==
+//          _scrollController.position.maxScrollExtent) {
+//        getProducts(pageNumber, filterBy, orderBy);
+//      }
+//    });
+//_scrollController.dispose();
+// RefreshIndicator(
+// key: _refreshIndicatorState,
+// onRefresh: () async {
+// return Future<void>.delayed(const Duration(seconds: 3), () {
+// setState(() {
+// products.clear();
+// });
+// getProducts(1, filterBy, orderBy);
+// });
+// },
+if (val.isNotEmpty) {
+searchProducts(val);
+} else if (val.isEmpty) {
+setState(() {
+products = [];
+
+getProducts(1, filterBy, orderBy);
+}
+controller: _scrollController,                              
+  searchProducts(String value) {
+    List<Products> itemData = [];
+    setState(() {
+      products = allProducts;
+    });
+
+    for (var item in products) {
+      if (item.productName!.toLowerCase().contains(value) ||
+          item.productName!.toUpperCase().contains(value)) {
+        if (!itemData.contains(item)) {
+          itemData.add(item);
+        }
+      }
+    }
+    setState(() {
+      products = itemData;
+    });
+  }
