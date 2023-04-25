@@ -1,0 +1,14 @@
+class RegisterBindings {
+  void appDependenciesRegister() {
+    SplashBinding().dependencies();
+    HomeBinding().dependencies();
+    CategoryBinding().dependencies();
+    LoginBinding().dependencies();
+    WishlistCartBinding().dependencies();
+    ProfileBinding().dependencies();
+    ProductBinding().dependencies();
+  }
+}
+
+  WidgetsFlutterBinding.ensureInitialized();
+  RegisterBindings().appDependenciesRegister();
